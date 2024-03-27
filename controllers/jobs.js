@@ -20,5 +20,8 @@ const deleteJob = async (req, res) => {
 
 module.exports = {
   getAllJobs,
-  login,
+  getJob,
+  createJob,
+  updateJob,
+  deleteJob,
 }
