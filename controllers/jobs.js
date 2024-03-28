@@ -15,7 +15,7 @@ const getJob = async (req, res) => {
 
   const job = await Job.findOne({ _id: jobID, createdBy: userID })
   if (!job) {
-    throw new NotFoundError()
+    throw new NotFoundError(`No job with id: ${jobID}`)
   }
   res.status(StatusCodes.OK).json({ job })
 }
@@ -43,14 +43,25 @@ const updateJob = async (req, res) => {
     { new: true, runValidators: true }
   )
   if (!job) {
-    throw new NotFoundError()
+    throw new NotFoundError(`No job with id: ${jobID}`)
   }
 
   res.status(StatusCodes.OK).json({ job })
 }
 
 const deleteJob = async (req, res) => {
-  res.send('Delete a job')
+  const {
+    user: { userID },
+    params: { id: jobID },
+  } = req
+
+  const job = await Job.findByIdAndDelete({ _id: jobID, createdBy: userID })
+
+  if (!job) {
+    throw new NotFoundError(`No job with id: ${jobID}`)
+  }
+
+  res.status(StatusCodes.OK).send('Successfully Deleted Job')
 }
 
 module.exports = {
